@@ -1,5 +1,5 @@
 import InfoPage from "../pages/InfoPage";
-import SenderDataPage from "../pages/SenderDataPge";
+import SenderDataPage from "../pages/SenderDataPage";
 import ImageLoaderPage from "../pages/ImageLoaderPage";
 import { RouteObject } from "react-router-dom";
 

@@ -1,0 +1,43 @@
+.input {
+    padding: 0.75rem;
+    border: 0.0625rem solid #ccc;
+    border-radius: 0.25rem;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+    color: var(--primary-text-color);
+}
+
+.input:focus {
+    outline: none;
+    border-color: var(--grey-border-color);
+}
+
+.input:hover {
+    background-color: var(--primary-background-color);
+}
+
+.input:disabled {
+    background-color: var(--primary-background-color);
+    color: var(--grey-border-color);
+    cursor: not-allowed;
+}
+
+.input.primary {
+    font-size: 1.1rem;
+}
+
+.input.secondary {
+    font-size: 1rem;
+}
+
+.input.small {
+    padding: 0.5rem 0.75rem;
+}
+
+.input.medium {
+    padding: 0.75rem 1rem;
+}
+
+.input.large {
+    padding: 1rem 1.25rem;
+}
