@@ -1,0 +1,48 @@
+.guide-header-block {
+    margin: 0 auto;
+    max-width: 70rem;
+    background-color: var(--primary-background-color);
+    border: 0.1rem solid var(--border-color);
+    border-radius: 0.5rem;
+    top: 0;
+    z-index: 100;
+    box-sizing: border-box;
+}
+
+.guide-header-body {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: stretch;
+    padding: 0.25rem 0;
+}
+
+.link-block {
+    flex: 1;
+    text-align: center;
+    margin: 0;
+}
+
+.link-block a {
+    color: var(--primary-text-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    display: block;
+    padding: 0.5rem 0;
+}
+
+.link-block.active {
+    background-color: var(--border-color);
+}
+
+.link-block.active a {
+    color: var(--primary-text-color);
+    font-weight: 600;
+}
+
+.gap-block {
+    width: 1px;
+    height: 2rem;
+    background-color: var(--border-color);
+}
