@@ -1,7 +1,8 @@
+import Router from "../../router";
 import type { ReactElement } from "react";
 
 const App = (): ReactElement => {
-    return <div className="app-block"></div>;
+    return <Router />;
 };
 
 export default App;
