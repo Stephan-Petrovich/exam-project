@@ -1,16 +1,19 @@
 import Button from "../../components/Button";
 import GuideHeader from "../../components/GuideHeader";
 import { ReactElement, ReactNode } from "react";
+import "./style.css";
 
 interface ILayoutProps {
     children: ReactNode;
     footerActions?: {
-        onNext?: () => void; // Callback для кнопки "Далее"
-        onSubmit?: () => void; // Callback для кнопки "Отправки данных формы"
-        onReset?: () => void; // Callback для кнопки "Сброса данных формы"
-        showNext?: boolean; // Будет ли отображаться кнопка "Далее"
-        showSubmit?: boolean; // Будет ли отображаться кнопка "Отправки данных формы"
-        showReset?: boolean; // Будет ли отображаться кнопка "Сброса данных формы"
+        onNext?: () => void;
+        onSubmit?: () => void;
+        onReset?: () => void;
+        showNext?: boolean;
+        showSubmit?: boolean;
+        showReset?: boolean;
+        isNextDisabled?: boolean;
+        isSubmitDisabled?: boolean;
     };
     currentPageTitle?: string;
 }
@@ -47,6 +50,7 @@ const Layout = ({
                             type="button"
                             label="Next"
                             onClick={footerActions.onNext}
+                            disabled={footerActions.isNextDisabled}
                         />
                     )}
                     {footerActions?.showSubmit && (
