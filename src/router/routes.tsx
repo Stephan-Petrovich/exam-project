@@ -1,6 +1,7 @@
 import InfoPage from "../pages/InfoPage";
 import SenderDataPage from "../pages/SenderDataPage";
 import ImageLoaderPage from "../pages/ImageLoaderPage";
+import ProtectedRoute from "../components/ProtectedRoute";
 import { RouteObject } from "react-router-dom";
 
 export const paths = {
@@ -16,11 +17,19 @@ const routes: RouteObject[] = [
     },
     {
         ...paths.IMAGELOADERPAGE,
-        element: <ImageLoaderPage />,
+        element: (
+            <ProtectedRoute path={paths.IMAGELOADERPAGE.path}>
+                <ImageLoaderPage />
+            </ProtectedRoute>
+        ),
     },
     {
         ...paths.SENDERDATAPAGE,
-        element: <SenderDataPage />,
+        element: (
+            <ProtectedRoute path={paths.SENDERDATAPAGE.path}>
+                <SenderDataPage />
+            </ProtectedRoute>
+        ),
     },
 ];
 

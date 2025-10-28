@@ -22,6 +22,7 @@ export interface IInputProps {
     value: string;
     name?: string;
     onChange: (query: string) => void;
+    onChangeEvent?: (event: ChangeEvent<HTMLInputElement>) => void;
     variant?: TypesOfInput;
     type?: HTMLInputTypeAttribute;
     placeholder?: string;
@@ -42,6 +43,7 @@ const Input = ({
     value = INPUT_DEFAULT_VALUE,
     name = INPUT_DEFAULT_NAME,
     onChange,
+    onChangeEvent,
     type,
     variant,
     placeholder,
@@ -54,6 +56,10 @@ const Input = ({
 }: IInputProps): ReactElement => {
     const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
         onChange(event.target.value);
+
+        if (onChangeEvent) {
+            onChangeEvent(event);
+        }
     };
 
     return (

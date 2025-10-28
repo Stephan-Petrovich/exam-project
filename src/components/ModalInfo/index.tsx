@@ -25,9 +25,9 @@ const ModalInfo = ({ handleCheckIsValid }: IModalInfoProps): ReactElement => {
 
     const getIsDataValid = (): boolean => {
         return (
-            validateName(name),
-            validateName(surname),
-            validateName(patronymic),
+            validateName(name) &&
+            validateName(surname) &&
+            validateName(patronymic) &&
             validateDate(dateOfBth)
         );
     };
