@@ -1,12 +1,12 @@
 import Layout from "../../layout/DefaultLayout";
 import ModalInfo from "../../components/ModalInfo";
 import { useProgress } from "../../contexts/ProgressContext";
-import { useState, type ReactElement } from "react";
+import { useEffect, useState, type ReactElement } from "react";
 import { useNavigate } from "react-router-dom";
 
 const InfoPage = (): ReactElement => {
     const navigate = useNavigate();
-    const { markStepCompleted } = useProgress();
+    const { markStepCompleted, markStepIncompleted } = useProgress();
 
     const [isEnteredDataValid, setIsEnteredDataValid] =
         useState<boolean>(false);
@@ -14,6 +14,12 @@ const InfoPage = (): ReactElement => {
     const handleCheckIsValid = (isValid: boolean) => {
         setIsEnteredDataValid(isValid);
     };
+
+    useEffect(() => {
+        if (!isEnteredDataValid == false) {
+            markStepIncompleted("isInfoCompleted");
+        }
+    }, [isEnteredDataValid]);
 
     const handleNext = () => {
         if (isEnteredDataValid) {

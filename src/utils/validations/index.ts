@@ -1,24 +1,29 @@
-export const validateName = (value: string): boolean => {
-    const nameRegex = /^[A-Za-zА-Яа-я\s\-']+$/;
+export const validateName = (value: string | undefined | null): boolean => {
+    if (!value || typeof value !== "string") {
+        return false;
+    }
 
-    return nameRegex.test(value) && value.trim().length >= 2;
+    const trimmed = value.trim();
+    if (trimmed.length < 2) {
+        return false;
+    }
+
+    const nameRegex = /^[A-Za-zА-Яа-я\s\-']+$/;
+    return nameRegex.test(trimmed);
 };
 
-export const validateDate = (value: string): boolean => {
-    const dateRegex = /^\d{2}\.\d{2}\.\d{4}$/;
+export const validateDate = (date: string): boolean => {
+    if (!date || date.length !== 10) return false;
 
-    if (!dateRegex.test(value)) return false;
+    const regex = /^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.\d{4}$/;
+    if (!regex.test(date)) return false;
 
-    const [day, month, year] = value.split(".").map(Number);
+    const [day, month, year] = date.split(".").map(Number);
+    const dateObj = new Date(year, month - 1, day);
 
-    if (day < 1 || day > 31) return false;
-    if (month < 1 || month > 12) return false;
-    if (year < 1900 || year > new Date().getFullYear()) return false;
-
-    const date = new Date(year, month - 1, day);
     return (
-        date.getDate() === day &&
-        date.getMonth() === month - 1 &&
-        date.getFullYear() === year
+        dateObj.getDate() === day &&
+        dateObj.getMonth() === month - 1 &&
+        dateObj.getFullYear() === year
     );
 };
