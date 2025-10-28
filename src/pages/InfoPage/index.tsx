@@ -1,31 +1,35 @@
 import Layout from "../../layout/DefaultLayout";
 import ModalInfo from "../../components/ModalInfo";
 import { useProgress } from "../../contexts/ProgressContext";
-import { useEffect, useState, type ReactElement } from "react";
+import { useUserForm } from "../../hooks/useUserForm";
+import { useEffect, useRef, type ReactElement } from "react";
 import { useNavigate } from "react-router-dom";
 
 const InfoPage = (): ReactElement => {
     const navigate = useNavigate();
-    const { markStepCompleted, markStepIncompleted } = useProgress();
 
-    const [isEnteredDataValid, setIsEnteredDataValid] =
-        useState<boolean>(false);
+    const { markStepCompleted, markStepIncompleted, progress } = useProgress();
 
-    const handleCheckIsValid = (isValid: boolean) => {
-        setIsEnteredDataValid(isValid);
-    };
+    const { userData, errors, isValid, updateField, resetAllFields } =
+        useUserForm();
+
+    const initialLoadRef = useRef(true);
 
     useEffect(() => {
-        if (!isEnteredDataValid == false) {
+        if (initialLoadRef.current) {
+            initialLoadRef.current = false;
+            return;
+        }
+
+        if (progress.isInfoCompleted && !isValid) {
             markStepIncompleted("isInfoCompleted");
         }
-    }, [isEnteredDataValid]);
+    }, [isValid]);
 
     const handleNext = () => {
-        if (isEnteredDataValid) {
-            markStepCompleted("isInfoCompleted");
-            navigate("/loader");
-        }
+        markStepCompleted("isInfoCompleted");
+
+        navigate("/loader");
     };
 
     return (
@@ -34,11 +38,17 @@ const InfoPage = (): ReactElement => {
             footerActions={{
                 showNext: true,
                 onNext: handleNext,
-                isNextDisabled: !isEnteredDataValid,
+                isNextDisabled: !isValid,
+                showReset: true,
+                onReset: resetAllFields,
             }}
         >
             <div className="info-page-body">
-                <ModalInfo handleCheckIsValid={handleCheckIsValid} />
+                <ModalInfo
+                    userData={userData}
+                    errors={errors}
+                    updateField={updateField}
+                />
             </div>
         </Layout>
     );

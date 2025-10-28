@@ -1,26 +1,27 @@
 import Toggle from "../Toggle";
 import Input, { InputSizes, TypesOfInput } from "../Input";
-import { useUserForm } from "../../hooks/useUserForm";
-import { useEffect, type ReactElement } from "react";
+import { IUserData } from "../../hooks/useUserForm";
+import { type ReactElement } from "react";
 import "./style.css";
 
 interface IModalInfoProps {
-    handleCheckIsValid: (isValid: boolean) => void;
+    userData: IUserData;
+    errors: Record<string, string>;
+    updateField: (field: keyof IUserData, value: string | boolean) => void;
 }
 
-const ModalInfo = ({ handleCheckIsValid }: IModalInfoProps): ReactElement => {
-    const { userData, isValid, errors, updateField } = useUserForm();
-
-    useEffect(() => {
-        handleCheckIsValid(isValid);
-    }, [userData]);
-
+const ModalInfo = ({
+    userData,
+    errors,
+    updateField,
+}: IModalInfoProps): ReactElement => {
     const handleTextChange =
         (field: "name" | "surname" | "patronymic") => (value: string) => {
             updateField(field, value);
         };
 
     const handleDateChange = (value: string) => updateField("dateOfBth", value);
+
     const handleGenderChange = (value: boolean) => updateField("gender", value);
 
     return (

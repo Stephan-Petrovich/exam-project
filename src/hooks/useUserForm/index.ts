@@ -2,7 +2,7 @@ import { validateName, validateDate } from "../../utils/validations";
 import { capitalizeText } from "../../utils/functions";
 import { useEffect, useState } from "react";
 
-interface IUserData {
+export interface IUserData {
     name: string;
     surname: string;
     patronymic: string;
