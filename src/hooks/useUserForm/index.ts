@@ -130,6 +130,8 @@ export const useUserForm = (): IUseUserFormReturn => {
             dateOfBth: "",
             gender: false,
         });
+
+        localStorage.removeItem("userData");
     };
 
     return {

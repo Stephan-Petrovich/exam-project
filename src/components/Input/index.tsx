@@ -19,9 +19,9 @@ export enum InputSizes {
 
 export interface IInputProps {
     className?: string;
-    value: string;
+    value?: string;
     name?: string;
-    onChange: (query: string) => void;
+    onChange?: (query: string) => void;
     onChangeEvent?: (event: ChangeEvent<HTMLInputElement>) => void;
     variant?: TypesOfInput;
     type?: HTMLInputTypeAttribute;
@@ -55,7 +55,9 @@ const Input = ({
     style,
 }: IInputProps): ReactElement => {
     const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-        onChange(event.target.value);
+        if (onChange) {
+            onChange(event.target.value);
+        }
 
         if (onChangeEvent) {
             onChangeEvent(event);

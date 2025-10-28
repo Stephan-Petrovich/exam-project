@@ -1,46 +1,72 @@
-import Input from "../Input";
-import { ReactElement, useState } from "react";
+import { ReactElement, ChangeEvent } from "react";
 import "./style.css";
 
-const ModalImageUpload = (): ReactElement => {
-    const [selectedImage, setSelectedImage] = useState<File | null>(null);
-    const [fileName, setFileName] = useState<string>("");
+interface IModalImageUploadProps {
+    selectedFile: File | null;
+    previewUrl: string | null;
+    fileName: string;
+    error: string | null;
+    isValid: boolean;
+    handleImageChange: (event: ChangeEvent<HTMLInputElement>) => void;
+}
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0] || null;
-
-        if (file) {
-            const allowedFileTypes = [
-                "image/jpeg",
-                "image/jpg",
-                "image/png",
-                "application/pdf",
-            ];
-            if (!allowedFileTypes.includes(file.type)) {
-                alert("Please select only JPG, PNG or PDF files");
-                return;
-            }
-
-            setSelectedImage(file);
-            setFileName(file.name);
-        }
-    };
+const ModalImageUpload = ({
+    selectedFile,
+    previewUrl,
+    fileName,
+    error,
+    isValid,
+    handleImageChange,
+}: IModalImageUploadProps): ReactElement => {
     return (
         <div className="modal-image-upload">
             <form className="image-upload-form">
-                <Input
+                <input
                     type="file"
-                    value={fileName}
-                    onChange={() => {}}
-                    onChangeEvent={handleFileChange}
+                    accept=".jpg,.jpeg,.png"
+                    onChange={handleImageChange}
                 />
+
+                {error && <div className="error-message">{error}</div>}
+
+                <div className="file-requirements">
+                    <p>
+                        <strong>📋 File requirements:</strong>
+                    </p>
+                    <ul className="requirements-list">
+                        <li>Allowed formats: JPG, PNG, PDF</li>
+                        <li>Maximum file size: 5MB</li>
+                    </ul>
+                </div>
             </form>
 
-            {selectedImage && (
-                <div>
-                    <p>Selected file: {selectedImage.name}</p>
-                    <p>Type: {selectedImage.type}</p>
-                    <p>Size: {(selectedImage.size / 1024).toFixed(2)} KB</p>
+            {previewUrl && isValid && (
+                <div className="file-preview">
+                    <h3>Selected file:</h3>
+                    <div className="file-info">
+                        <p>Name: {fileName}</p>
+                        <p>Type: {selectedFile?.type}</p>
+                        <p>
+                            Size:{" "}
+                            {(selectedFile
+                                ? selectedFile.size / 1024
+                                : 0
+                            ).toFixed(2)}
+                            KB
+                        </p>
+                    </div>
+
+                    <div className="preview-container">
+                        {selectedFile?.type.startsWith("image/") && (
+                            <div className="image-preview">
+                                <img
+                                    src={previewUrl}
+                                    alt="Preview"
+                                    className="preview-image"
+                                />
+                            </div>
+                        )}
+                    </div>
                 </div>
             )}
         </div>
