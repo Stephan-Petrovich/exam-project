@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    max-width: 1200px;
+    max-width: 75rem;
     margin: 0 auto;
     padding: 0 1rem;
 }
@@ -12,13 +12,13 @@
     top: 0;
     background: white;
     z-index: 100;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 0.0625rem solid var(--border-color);
 }
 
 .page-title {
     padding: 0.1rem 0;
     text-align: center;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 0.0625rem solid var(--border-color);
 }
 
 .page-title h1 {
@@ -36,7 +36,7 @@
 .layout-footer {
     margin-top: auto;
     padding: 1.5rem 0;
-    border-top: 1px solid var(--border-color);
+    border-top: 0.0625rem solid var(--border-color);
 }
 
 .footer-actions {
