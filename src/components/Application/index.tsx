@@ -1,14 +1,17 @@
 import Router from "../../router";
-import { AppDataProvider } from "../../contexts/AppDataContext";
+import { ImageDataProvider } from "../../contexts/ImageDataContext";
+import { UserDataProvider } from "../../contexts/UserDataContext";
 import { ProgressProvider } from "../../contexts/ProgressContext";
 import type { ReactElement } from "react";
 
 const App = (): ReactElement => {
     return (
         <ProgressProvider>
-            <AppDataProvider>
-                <Router />
-            </AppDataProvider>
+            <UserDataProvider>
+                <ImageDataProvider>
+                    <Router />
+                </ImageDataProvider>
+            </UserDataProvider>
         </ProgressProvider>
     );
 };

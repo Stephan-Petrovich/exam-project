@@ -1,7 +1,7 @@
 import Layout from "../../layout/DefaultLayout";
 import ModalImageUpload from "../../components/ModalImageUpload";
+import { useImageData } from "../../contexts/ImageDataContext";
 import { useProgress } from "../../contexts/ProgressContext";
-import { useImageForm } from "../../hooks/useImageForm";
 import { useNavigate } from "react-router-dom";
 import type { ReactElement } from "react";
 import { useRef, useEffect } from "react";
@@ -11,15 +11,7 @@ const ImageLoaderPage = (): ReactElement => {
 
     const { markStepCompleted, markStepIncompleted, progress } = useProgress();
 
-    const {
-        selectedFile,
-        previewUrl,
-        fileName,
-        isValid,
-        error,
-        handleImageChange,
-        handleResetImage,
-    } = useImageForm();
+    const { isValid, handleResetImage } = useImageData();
 
     const initialLoadRef = useRef(true);
 
@@ -52,14 +44,7 @@ const ImageLoaderPage = (): ReactElement => {
             }}
         >
             <div className="image-loader-block">
-                <ModalImageUpload
-                    selectedFile={selectedFile}
-                    previewUrl={previewUrl}
-                    fileName={fileName}
-                    error={error}
-                    isValid={isValid}
-                    handleImageChange={handleImageChange}
-                />
+                <ModalImageUpload />
             </div>
         </Layout>
     );

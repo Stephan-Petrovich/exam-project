@@ -1,6 +1,12 @@
+import {
+    createContext,
+    ReactNode,
+    useContext,
+    useEffect,
+    useState,
+    useCallback,
+} from "react";
 import { validateName, validateDate } from "../../utils/validations";
-import { useAppData } from "../../contexts/AppDataContext";
-import { useCallback, useEffect, useState } from "react";
 import { capitalizeText } from "../../utils/functions";
 
 export interface IUserData {
@@ -11,18 +17,21 @@ export interface IUserData {
     gender: boolean;
 }
 
-interface IUseUserFormReturn {
+interface IUserDataContext {
     userData: IUserData;
     errors: Record<string, string>;
     isValid: boolean;
     updateField: (field: keyof IUserData, value: string | boolean) => void;
-    checkIsFieldValid: (field: keyof IUserData, value: string) => boolean;
-    resetAllFields: () => void;
+    handleResetData: () => void;
 }
 
-export const useUserForm = (): IUseUserFormReturn => {
-    const { updateUserData } = useAppData();
+interface IUserDataProviderProps {
+    children: ReactNode;
+}
 
+const UserDataContext = createContext<IUserDataContext | null>(null);
+
+const UserDataProvider = ({ children }: IUserDataProviderProps) => {
     const [userData, setUserData] = useState<IUserData>({
         name: "",
         surname: "",
@@ -42,23 +51,14 @@ export const useUserForm = (): IUseUserFormReturn => {
         }
     }, []);
 
-    useEffect(() => {
-        localStorage.setItem("userData", JSON.stringify(userData));
-    }, [userData]);
-
-    useEffect(() => {
-        const isFormValid =
+    const checkIsDataValid = useCallback((userData: IUserData): boolean => {
+        return (
             validateName(userData.name) &&
             validateName(userData.surname) &&
             validateName(userData.patronymic) &&
-            validateDate(userData.dateOfBth);
-
-        setIsValid(isFormValid);
-
-        if (isFormValid) {
-            updateUserData(userData);
-        }
-    }, [userData]);
+            validateDate(userData.dateOfBth)
+        );
+    }, []);
 
     const checkIsFieldValid = useCallback(
         (field: keyof IUserData, value: string): boolean => {
@@ -91,6 +91,12 @@ export const useUserForm = (): IUseUserFormReturn => {
 
         return errorMessages[field];
     }, []);
+
+    useEffect(() => {
+        localStorage.setItem("userData", JSON.stringify(userData));
+
+        setIsValid(checkIsDataValid(userData));
+    }, [userData]);
 
     const updateField = useCallback(
         (field: keyof IUserData, value: string | boolean) => {
@@ -136,7 +142,7 @@ export const useUserForm = (): IUseUserFormReturn => {
         []
     );
 
-    const resetAllFields = () => {
+    const handleResetData = () => {
         setUserData({
             name: "",
             surname: "",
@@ -145,15 +151,28 @@ export const useUserForm = (): IUseUserFormReturn => {
             gender: false,
         });
 
+        setErrors({});
+
         localStorage.removeItem("userData");
     };
 
-    return {
-        userData,
-        errors,
-        isValid,
-        updateField,
-        checkIsFieldValid,
-        resetAllFields,
-    };
+    return (
+        <UserDataContext.Provider
+            value={{ userData, errors, isValid, updateField, handleResetData }}
+        >
+            {children}
+        </UserDataContext.Provider>
+    );
 };
+
+const useUserData = () => {
+    const context = useContext(UserDataContext);
+
+    if (context == null) {
+        throw new Error("useUserData must be used within a UserDataProvider");
+    }
+
+    return context;
+};
+
+export { UserDataProvider, useUserData };

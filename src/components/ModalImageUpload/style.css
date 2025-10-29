@@ -1,5 +1,5 @@
 .modal-image-upload {
-    max-width: 600px;
+    max-width: 37, 5rem;
     margin: 0 auto;
     padding: 2rem;
     background: var(--secondary-background-color);
@@ -45,7 +45,7 @@
     color: white;
     border: none;
     padding: 0.875rem 1.75rem;
-    border-radius: 10px;
+    border-radius: 0.625rem;
     font-weight: 600;
     font-size: 1rem;
     cursor: pointer;

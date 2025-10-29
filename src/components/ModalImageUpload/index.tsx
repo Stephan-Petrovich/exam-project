@@ -1,23 +1,10 @@
-import { ReactElement, ChangeEvent } from "react";
+import { useImageData } from "../../contexts/ImageDataContext";
+import { ReactElement } from "react";
 import "./style.css";
 
-interface IModalImageUploadProps {
-    selectedFile: File | null;
-    previewUrl: string | null;
-    fileName: string;
-    error: string | null;
-    isValid: boolean;
-    handleImageChange: (event: ChangeEvent<HTMLInputElement>) => void;
-}
+const ModalImageUpload = (): ReactElement => {
+    const { imageData, isValid, error, handleImageChange } = useImageData();
 
-const ModalImageUpload = ({
-    selectedFile,
-    previewUrl,
-    fileName,
-    error,
-    isValid,
-    handleImageChange,
-}: IModalImageUploadProps): ReactElement => {
     return (
         <div className="modal-image-upload">
             <form className="image-upload-form">
@@ -41,18 +28,19 @@ const ModalImageUpload = ({
                 </div>
             </form>
 
-            {previewUrl && isValid && (
+            {imageData.previewUrl && isValid && (
                 <div className="file-preview">
                     <h3>Selected file:</h3>
                     <div className="file-info">
-                        <p>Name: {fileName}</p>
-                        <p>Type: {selectedFile?.type}</p>
+                        <p>Name: {imageData.fileName}</p>
+                        <p>Type: {imageData.selectedFile?.type || "Image"}</p>
                         <p>
                             Size:{" "}
-                            {(selectedFile
-                                ? selectedFile.size / 1024
-                                : 0
-                            ).toFixed(2)}
+                            {imageData.selectedFile
+                                ? (imageData.selectedFile.size / 1024).toFixed(
+                                      2
+                                  )
+                                : "Unknown"}{" "}
                             KB
                         </p>
                     </div>
@@ -60,7 +48,7 @@ const ModalImageUpload = ({
                     <div className="preview-container">
                         <div className="image-preview">
                             <img
-                                src={previewUrl}
+                                src={imageData.previewUrl}
                                 alt="Preview"
                                 className="preview-image"
                             />

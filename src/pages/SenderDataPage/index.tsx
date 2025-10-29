@@ -1,6 +1,7 @@
 import Layout from "../../layout/DefaultLayout";
+import { useImageData } from "../../contexts/ImageDataContext";
 import { useProgress } from "../../contexts/ProgressContext";
-import { useAppData } from "../../contexts/AppDataContext";
+import { useUserData } from "../../contexts/UserDataContext";
 import { useNavigate } from "react-router-dom";
 import { type ReactElement } from "react";
 import "./style.css";
@@ -8,10 +9,18 @@ import "./style.css";
 const SenderDataPage = (): ReactElement => {
     const navigate = useNavigate();
 
-    const { resetAppData } = useAppData();
-    const { checkIsCanAccessStep } = useProgress();
+    const { handleResetData } = useUserData();
+    const { handleResetImage } = useImageData();
+
+    const { checkIsCanAccessStep, resetProgress } = useProgress();
 
     const isCanSubmit = checkIsCanAccessStep("/sender");
+
+    const handleResetAllData = () => {
+        handleResetData();
+        handleResetImage();
+        resetProgress();
+    };
 
     const handleSubmit = () => {
         if (!isCanSubmit) {
@@ -21,7 +30,7 @@ const SenderDataPage = (): ReactElement => {
 
         alert("Thank you! Your data has been submitted successfully.");
 
-        resetAppData();
+        handleResetAllData();
 
         navigate("/");
     };
@@ -32,7 +41,8 @@ const SenderDataPage = (): ReactElement => {
                 "Are you sure you want to reset all data? This action cannot be undone."
             )
         ) {
-            resetAppData();
+            handleResetAllData();
+
             alert("All data has been reset successfully.");
         }
     };

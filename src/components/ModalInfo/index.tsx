@@ -1,20 +1,12 @@
 import Toggle from "../Toggle";
 import Input, { InputSizes, TypesOfInput } from "../Input";
-import { IUserData } from "../../hooks/useUserForm";
+import { useUserData } from "../../contexts/UserDataContext";
 import { type ReactElement } from "react";
 import "./style.css";
 
-interface IModalInfoProps {
-    userData: IUserData;
-    errors: Record<string, string>;
-    updateField: (field: keyof IUserData, value: string | boolean) => void;
-}
+const ModalInfo = (): ReactElement => {
+    const { userData, updateField, errors } = useUserData();
 
-const ModalInfo = ({
-    userData,
-    errors,
-    updateField,
-}: IModalInfoProps): ReactElement => {
     const handleTextChange =
         (field: "name" | "surname" | "patronymic") => (value: string) => {
             updateField(field, value);

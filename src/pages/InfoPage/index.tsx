@@ -2,7 +2,7 @@ import Layout from "../../layout/DefaultLayout";
 import ModalInfo from "../../components/ModalInfo";
 import { useEffect, useRef, type ReactElement } from "react";
 import { useProgress } from "../../contexts/ProgressContext";
-import { useUserForm } from "../../hooks/useUserForm";
+import { useUserData } from "../../contexts/UserDataContext";
 import { useNavigate } from "react-router-dom";
 
 const InfoPage = (): ReactElement => {
@@ -10,8 +10,7 @@ const InfoPage = (): ReactElement => {
 
     const { markStepCompleted, markStepIncompleted, progress } = useProgress();
 
-    const { userData, errors, isValid, updateField, resetAllFields } =
-        useUserForm();
+    const { isValid, handleResetData } = useUserData();
 
     const initialLoadRef = useRef(true);
 
@@ -40,15 +39,11 @@ const InfoPage = (): ReactElement => {
                 onNext: handleNext,
                 isNextDisabled: !isValid,
                 showReset: true,
-                onReset: resetAllFields,
+                onReset: handleResetData,
             }}
         >
             <div className="info-page-body">
-                <ModalInfo
-                    userData={userData}
-                    errors={errors}
-                    updateField={updateField}
-                />
+                <ModalInfo />
             </div>
         </Layout>
     );
