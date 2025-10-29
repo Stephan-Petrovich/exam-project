@@ -37,19 +37,11 @@ export const useImageForm = (): IUseImageFormReturn => {
         }
     }, []);
 
-    // useEffect(() => {
-    //     return () => {
-    //         if (previewUrl) {
-    //             URL.revokeObjectURL(previewUrl);
-    //         }
-    //     };
-    // }, [previewUrl]);
-
     useEffect(() => {
         if (isValid && selectedFile && previewUrl) {
             updateImageData(selectedFile, previewUrl, fileName);
         }
-    }, [selectedFile, previewUrl, fileName]);
+    }, [selectedFile, previewUrl, fileName, isValid]);
 
     const checkIsFileValid = (
         file: File

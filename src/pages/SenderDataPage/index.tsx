@@ -8,7 +8,7 @@ import "./style.css";
 const SenderDataPage = (): ReactElement => {
     const navigate = useNavigate();
 
-    const { appData, resetAppData } = useAppData();
+    const { resetAppData } = useAppData();
     const { checkIsCanAccessStep } = useProgress();
 
     const isCanSubmit = checkIsCanAccessStep("/sender");
@@ -18,11 +18,6 @@ const SenderDataPage = (): ReactElement => {
             alert("Please complete all steps before submitting.'");
             return;
         }
-
-        console.log("Submitting data:", {
-            userData: appData.userData,
-            imageData: appData.imageData,
-        });
 
         alert("Thank you! Your data has been submitted successfully.");
 

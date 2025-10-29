@@ -1,7 +1,7 @@
 import { validateName, validateDate } from "../../utils/validations";
-import { capitalizeText } from "../../utils/functions";
-import { useCallback, useEffect, useState } from "react";
 import { useAppData } from "../../contexts/AppDataContext";
+import { useCallback, useEffect, useState } from "react";
+import { capitalizeText } from "../../utils/functions";
 
 export interface IUserData {
     name: string;
@@ -47,18 +47,15 @@ export const useUserForm = (): IUseUserFormReturn => {
     }, [userData]);
 
     useEffect(() => {
-        const isFormValid = () => {
-            return (
-                validateName(userData.name) &&
-                validateName(userData.surname) &&
-                validateName(userData.patronymic) &&
-                validateDate(userData.dateOfBth)
-            );
-        };
+        const isFormValid =
+            validateName(userData.name) &&
+            validateName(userData.surname) &&
+            validateName(userData.patronymic) &&
+            validateDate(userData.dateOfBth);
 
-        setIsValid(isFormValid());
+        setIsValid(isFormValid);
 
-        if (isFormValid()) {
+        if (isFormValid) {
             updateUserData(userData);
         }
     }, [userData]);
