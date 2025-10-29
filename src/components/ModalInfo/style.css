@@ -65,54 +65,21 @@
 }
 
 .form-group:last-child {
-    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    background-color: #f8fafc;
     padding: 1.5rem;
     border-radius: 1rem;
     border: 0.0625rem solid #e2e8f0;
     margin-top: 0.5rem;
 }
 
-.alert-error {
-    background: linear-gradient(135deg, #fee2e2, #fecaca);
-    color: #dc2626;
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    border-left: 0.25rem solid #dc2626;
-    animation: slideIn 0.3s ease-out;
-    margin-top: 0.25rem;
-}
-
-.alert-error::before {
-    content: "⚠️ ";
-    margin-right: 0.5rem;
-}
-
-.modal-info-form input:valid:not(:placeholder-shown) {
+.modal-info-form input:valid {
     border-color: #10b981;
-    background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+    background-color: #f0fdf4;
 }
 
-.modal-info-form input:valid:not(:placeholder-shown):focus {
+.modal-info-form input:valid:focus {
     border-color: #059669;
     box-shadow: 0 0 0 0.1875rem rgba(16, 185, 129, 0.1);
-}
-
-.modal-info-form input:invalid:not(:placeholder-shown) {
-    border-color: #dc2626;
-    background: linear-gradient(135deg, #fef2f2, #fee2e2);
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateX(-0.625rem);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
 }
 
 @keyframes fadeIn {

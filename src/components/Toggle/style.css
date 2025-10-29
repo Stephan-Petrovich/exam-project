@@ -22,7 +22,7 @@
 
 .pill-option.active {
     background-color: var(--grey-border-color);
-    color: white;
+    color: var(--white-text-color);
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
 }
 

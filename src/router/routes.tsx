@@ -3,6 +3,9 @@ import SenderDataPage from "../pages/SenderDataPage";
 import ImageLoaderPage from "../pages/ImageLoaderPage";
 import ProtectedRoute from "../components/ProtectedRoute";
 import { RouteObject } from "react-router-dom";
+import { UserDataProvider } from "../contexts/UserDataContext";
+import { ProgressProvider } from "../contexts/ProgressContext";
+import { ImageDataProvider } from "../contexts/ImageDataContext";
 
 export const paths = {
     INFOPAGE: { id: "info", path: "/" },
@@ -13,22 +16,38 @@ export const paths = {
 const routes: RouteObject[] = [
     {
         ...paths.INFOPAGE,
-        element: <InfoPage />,
+        element: (
+            <ProgressProvider>
+                <UserDataProvider>
+                    <InfoPage />
+                </UserDataProvider>
+            </ProgressProvider>
+        ),
     },
     {
         ...paths.IMAGELOADERPAGE,
         element: (
-            <ProtectedRoute path={paths.IMAGELOADERPAGE.path}>
-                <ImageLoaderPage />
-            </ProtectedRoute>
+            <ProgressProvider>
+                <ProtectedRoute path={paths.IMAGELOADERPAGE.path}>
+                    <ImageDataProvider>
+                        <ImageLoaderPage />
+                    </ImageDataProvider>
+                </ProtectedRoute>
+            </ProgressProvider>
         ),
     },
     {
         ...paths.SENDERDATAPAGE,
         element: (
-            <ProtectedRoute path={paths.SENDERDATAPAGE.path}>
-                <SenderDataPage />
-            </ProtectedRoute>
+            <ProgressProvider>
+                <ProtectedRoute path={paths.SENDERDATAPAGE.path}>
+                    <UserDataProvider>
+                        <ImageDataProvider>
+                            <SenderDataPage />
+                        </ImageDataProvider>
+                    </UserDataProvider>
+                </ProtectedRoute>
+            </ProgressProvider>
         ),
     },
 ];

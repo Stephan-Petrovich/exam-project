@@ -10,7 +10,7 @@
 .layout-header {
     position: sticky;
     top: 0;
-    background: white;
+    background: var(--white-text-color);
     z-index: 100;
     border-bottom: 0.0625rem solid var(--border-color);
 }

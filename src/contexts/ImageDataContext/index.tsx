@@ -64,21 +64,24 @@ const ImageDataProvider = ({ children }: IImageDataProviderProps) => {
         setIsValid(isDataValid);
     }, [imageData.previewUrl, imageData.fileName]);
 
-    const checkIsFileValid = (file: File): boolean => {
+    const checkIsFileValid = useCallback((file: File): boolean => {
         if (!VALIDATION_CONFIG.allowedTypes.includes(file.type)) {
             setError(`Invalid file type. Allowed types: JPG, PNG`);
+
             return false;
         }
 
         if (file.size > VALIDATION_CONFIG.maxFileSize) {
             const maxSizeMB = VALIDATION_CONFIG.maxFileSize / (1024 * 1024);
+
             setError(`File too large. Maximum size is ${maxSizeMB}MB`);
+
             return false;
         }
 
         setError(null);
         return true;
-    };
+    }, []);
 
     const handleImageChange = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
@@ -120,7 +123,7 @@ const ImageDataProvider = ({ children }: IImageDataProviderProps) => {
         []
     );
 
-    const handleResetImage = () => {
+    const handleResetImage = useCallback(() => {
         if (imageData.previewUrl) {
             URL.revokeObjectURL(imageData.previewUrl);
         }
@@ -131,7 +134,7 @@ const ImageDataProvider = ({ children }: IImageDataProviderProps) => {
 
         localStorage.removeItem("userImageUrl");
         localStorage.removeItem("userImageName");
-    };
+    }, []);
 
     return (
         <ImageDataContext.Provider

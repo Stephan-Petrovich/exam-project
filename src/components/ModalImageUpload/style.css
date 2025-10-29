@@ -4,7 +4,7 @@
     padding: 2rem;
     background: var(--secondary-background-color);
     border-radius: 1rem;
-    box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.08);
+    box-shadow: 0 0.25rem 1.25rem var(--ultra-dark-box-shadow);
     font-family: "Times New Roman", Times, serif;
 }
 
@@ -17,7 +17,7 @@
     padding: 3rem 0.5rem;
     border: 0.1875rem dashed #d1d5db;
     border-radius: 1rem;
-    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    background: #f8fafc;
     transition: all 0.4s ease;
     cursor: pointer;
     position: relative;
@@ -28,7 +28,7 @@
 
 .file-input:hover {
     border-color: #3b82f6;
-    background: linear-gradient(135deg, #f0f7ff, #e0f2fe);
+    background: #f0f7ff;
     transform: translateY(-0.125rem);
     box-shadow: 0 0.5rem 1.875rem rgba(59, 130, 246, 0.15);
 }
@@ -37,11 +37,11 @@
     outline: none;
     border-color: #3b82f6;
     box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.1);
-    background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+    background: #e0f2fe;
 }
 
 .file-input::file-selector-button {
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    background-color: #3b82f6;
     color: white;
     border: none;
     padding: 0.875rem 1.75rem;
@@ -55,13 +55,13 @@
 }
 
 .file-input::file-selector-button:hover {
-    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+    background-color: #1d4ed8;
     transform: translateY(-2px);
     box-shadow: 0 0.375rem 1.25rem rgba(29, 78, 216, 0.4);
 }
 
 .file-requirements {
-    background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+    background: #f0f9ff;
     padding: 1.5rem;
     border-radius: 0.75rem;
     border: 0.0625rem solid #bae6fd;
@@ -87,7 +87,7 @@
 }
 
 .file-preview {
-    background: #ffffff;
+    background: var(--secondary-background-color);
     border: 0.125rem solid #e5e7eb;
     border-radius: 1rem;
     padding: 2rem;

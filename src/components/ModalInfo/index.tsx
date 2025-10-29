@@ -1,4 +1,5 @@
 import Toggle from "../Toggle";
+import AlertError from "../AlertError";
 import Input, { InputSizes, TypesOfInput } from "../Input";
 import { useUserData } from "../../contexts/UserDataContext";
 import { type ReactElement } from "react";
@@ -29,9 +30,7 @@ const ModalInfo = (): ReactElement => {
                         placeholder="Enter your surname"
                         required
                     />
-                    {errors.surname && (
-                        <div className="alert-error">{errors.surname}</div>
-                    )}
+                    {errors.surname && <AlertError label={errors.surname} />}
                 </div>
 
                 <div className="form-group">
@@ -45,9 +44,7 @@ const ModalInfo = (): ReactElement => {
                         autoFocus
                         required
                     />
-                    {errors.name && (
-                        <div className="alert-error">{errors.name}</div>
-                    )}
+                    {errors.name && <AlertError label={errors.name} />}
                 </div>
 
                 <div className="form-group">
@@ -61,7 +58,7 @@ const ModalInfo = (): ReactElement => {
                         required
                     />
                     {errors.patronymic && (
-                        <div className="alert-error">{errors.patronymic}</div>
+                        <AlertError label={errors.patronymic} />
                     )}
                 </div>
 
@@ -76,7 +73,7 @@ const ModalInfo = (): ReactElement => {
                         required
                     />
                     {errors.dateOfBth && (
-                        <div className="alert-error">{errors.dateOfBth}</div>
+                        <AlertError label={errors.dateOfBth} />
                     )}
                 </div>
 
