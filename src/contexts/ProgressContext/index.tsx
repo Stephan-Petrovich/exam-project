@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+    createContext,
+    ReactNode,
+    useContext,
+    useEffect,
+    useState,
+} from "react";
 
 interface IProgressState {
     isInfoCompleted: boolean;
@@ -14,18 +20,30 @@ interface IProgressContext {
     checkIsCanAccessStep: (path: string) => boolean;
 }
 
-interface IProviderProps {
+interface IProgressProviderProps {
     children: ReactNode;
 }
 
 const ProgressContext = createContext<IProgressContext | null>(null);
 
-const ProgressProvider = ({ children }: IProviderProps) => {
+const ProgressProvider = ({ children }: IProgressProviderProps) => {
     const [progress, setProgress] = useState<IProgressState>({
         isInfoCompleted: false,
         isLoaderCompleted: false,
         isSenderCompleted: false,
     });
+
+    useEffect(() => {
+        const savedProgress = localStorage.getItem("progress");
+
+        if (savedProgress) {
+            setProgress(JSON.parse(savedProgress));
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem("progress", JSON.stringify(progress));
+    }, [progress]);
 
     const markStepCompleted = (step: keyof IProgressState): void => {
         setProgress((prev) => ({ ...prev, [step]: true }));

@@ -1,6 +1,7 @@
 import { validateName, validateDate } from "../../utils/validations";
 import { capitalizeText } from "../../utils/functions";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useAppData } from "../../contexts/AppDataContext";
 
 export interface IUserData {
     name: string;
@@ -20,6 +21,8 @@ interface IUseUserFormReturn {
 }
 
 export const useUserForm = (): IUseUserFormReturn => {
+    const { updateUserData } = useAppData();
+
     const [userData, setUserData] = useState<IUserData>({
         name: "",
         surname: "",
@@ -53,15 +56,19 @@ export const useUserForm = (): IUseUserFormReturn => {
             );
         };
 
-        setIsValid(isFormValid);
+        setIsValid(isFormValid());
+
+        if (isFormValid()) {
+            updateUserData(userData);
+        }
     }, [userData]);
 
-    const checkIsFieldValid = (
-        field: keyof IUserData,
-        value: string
-    ): boolean => {
-        const validators: Record<keyof IUserData, (value: string) => boolean> =
-            {
+    const checkIsFieldValid = useCallback(
+        (field: keyof IUserData, value: string): boolean => {
+            const validators: Record<
+                keyof IUserData,
+                (value: string) => boolean
+            > = {
                 name: validateName,
                 surname: validateName,
                 patronymic: validateName,
@@ -69,10 +76,12 @@ export const useUserForm = (): IUseUserFormReturn => {
                 gender: () => true,
             };
 
-        return validators[field](value);
-    };
+            return validators[field](value);
+        },
+        []
+    );
 
-    const getErrorMessage = (field: keyof IUserData): string => {
+    const getErrorMessage = useCallback((field: keyof IUserData): string => {
         const errorMessages: Record<keyof IUserData, string> = {
             name: "Only letters, spaces, hyphens and apostrophes allowed. Minimum 2 characters.",
             surname:
@@ -84,43 +93,51 @@ export const useUserForm = (): IUseUserFormReturn => {
         };
 
         return errorMessages[field];
-    };
+    }, []);
 
-    const updateField = (field: keyof IUserData, value: string | boolean) => {
-        let passedValue = value;
+    const updateField = useCallback(
+        (field: keyof IUserData, value: string | boolean) => {
+            let passedValue = value;
 
-        if (
-            typeof value === "string" &&
-            (field === "name" || field === "surname" || field === "patronymic")
-        ) {
-            passedValue = capitalizeText(value);
-        }
-
-        if (field === "dateOfBth" && typeof value === "string") {
-            let formattedDate = value.replace(/[^\d.]/g, "");
-
-            if (value.length === 2 || value.length === 5) {
-                formattedDate = value + ".";
+            if (
+                typeof value === "string" &&
+                (field === "name" ||
+                    field === "surname" ||
+                    field === "patronymic")
+            ) {
+                passedValue = capitalizeText(value);
             }
 
-            if (formattedDate.length <= 10) {
-                setUserData((prev) => ({ ...prev, dateOfBth: formattedDate }));
+            if (field === "dateOfBth" && typeof value === "string") {
+                let formattedDate = value.replace(/[^\d.]/g, "");
+
+                if (value.length === 2 || value.length === 5) {
+                    formattedDate = value + ".";
+                }
+
+                if (formattedDate.length <= 10) {
+                    setUserData((prev) => ({
+                        ...prev,
+                        dateOfBth: formattedDate,
+                    }));
+                }
+
+                passedValue = formattedDate;
             }
 
-            passedValue = formattedDate;
-        }
+            setUserData((prev) => ({ ...prev, [field]: passedValue }));
 
-        setUserData((prev) => ({ ...prev, [field]: passedValue }));
+            if (typeof passedValue === "string") {
+                const fieldIsValid = checkIsFieldValid(field, passedValue);
 
-        if (typeof passedValue === "string") {
-            const fieldIsValid = checkIsFieldValid(field, passedValue);
-
-            setErrors((prev) => ({
-                ...prev,
-                [field]: fieldIsValid ? "" : getErrorMessage(field),
-            }));
-        }
-    };
+                setErrors((prev) => ({
+                    ...prev,
+                    [field]: fieldIsValid ? "" : getErrorMessage(field),
+                }));
+            }
+        },
+        []
+    );
 
     const resetAllFields = () => {
         setUserData({

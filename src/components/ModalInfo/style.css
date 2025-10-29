@@ -1,8 +1,11 @@
 .modal-info-block {
+    max-width: 500px;
+    margin: 0 auto;
     padding: 2rem;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .modal-info-form {
@@ -17,8 +20,112 @@
     gap: 0.5rem;
 }
 
-.gender-label {
-    color: var(--dark-text-color);
-    margin-bottom: 0.5rem;
+.modal-info-form input {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background: #f8fafc;
+    color: #1a202c;
+}
+
+.modal-info-form input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    transform: translateY(-1px);
+}
+
+.modal-info-form input:hover {
+    border-color: #cbd5e0;
+    background: #ffffff;
+}
+
+.modal-info-form input::placeholder {
+    color: #9ca3af;
+}
+
+.modal-info-form input[size="small"] {
+    max-width: 200px;
     text-align: center;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+.gender-label {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+    display: block;
+}
+
+.form-group:last-child {
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    padding: 1.5rem;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    margin-top: 0.5rem;
+}
+
+.alert-error {
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    color: #dc2626;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-left: 4px solid #dc2626;
+    animation: slideIn 0.3s ease-out;
+    margin-top: 0.25rem;
+}
+
+.alert-error::before {
+    content: "⚠️ ";
+    margin-right: 0.5rem;
+}
+
+.modal-info-form input:valid:not(:placeholder-shown) {
+    border-color: #10b981;
+    background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+}
+
+.modal-info-form input:valid:not(:placeholder-shown):focus {
+    border-color: #059669;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.modal-info-form input:invalid:not(:placeholder-shown) {
+    border-color: #dc2626;
+    background: linear-gradient(135deg, #fef2f2, #fee2e2);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-info-form .form-group {
+    animation: fadeIn 0.5s ease-out;
 }

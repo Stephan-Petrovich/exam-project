@@ -7,7 +7,7 @@ const GuideHeader = (): ReactElement => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const { checkIsCanAccessStep } = useProgress();
+    const { checkIsCanAccessStep, progress } = useProgress();
 
     const getIsActive = (path: string) => {
         const isActive: boolean = location.pathname === path;
@@ -15,11 +15,20 @@ const GuideHeader = (): ReactElement => {
         return isActive ? "active" : "";
     };
 
+    const getIsCompleted = (path: string) => {
+        const progressStates: Record<string, boolean> = {
+            "/": progress.isInfoCompleted,
+            "/loader": progress.isLoaderCompleted,
+            "/sender": progress.isSenderCompleted,
+        };
+
+        return progressStates[path];
+    };
+
     const handleNavigation = (path: string) => (event: React.MouseEvent) => {
         if (!checkIsCanAccessStep(path)) {
             event.preventDefault();
 
-            //TODO Можно добавить уведомление для пользователя
             alert("Please complete the steps before proceeding to this page.");
 
             return;
@@ -34,7 +43,6 @@ const GuideHeader = (): ReactElement => {
         { path: "/sender", label: "Sender data page" },
     ];
 
-    //TODO Добавить стили для disabled links
     return (
         <div className="guide-header-block">
             <div className="guide-header-body">
@@ -46,16 +54,12 @@ const GuideHeader = (): ReactElement => {
                                 !checkIsCanAccessStep(item.path)
                                     ? "disabled"
                                     : ""
-                            }`}
+                            } ${getIsCompleted(item.path) ? "completed" : ""}`}
                         >
                             <Link
                                 to={item.path}
                                 onClick={handleNavigation(item.path)}
-                                style={{
-                                    opacity: checkIsCanAccessStep(item.path)
-                                        ? 1
-                                        : 0.5,
-                                }}
+                                className="guide-link"
                             >
                                 {item.label}
                             </Link>

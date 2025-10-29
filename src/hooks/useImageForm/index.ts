@@ -1,4 +1,5 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { useAppData } from "../../contexts/AppDataContext";
 
 interface IUseImageFormReturn {
     selectedFile: File | null;
@@ -17,6 +18,8 @@ const VALIDATION_CONFIG = {
 };
 
 export const useImageForm = (): IUseImageFormReturn => {
+    const { updateImageData } = useAppData();
+
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [fileName, setFileName] = useState<string>("");
@@ -34,13 +37,19 @@ export const useImageForm = (): IUseImageFormReturn => {
         }
     }, []);
 
+    // useEffect(() => {
+    //     return () => {
+    //         if (previewUrl) {
+    //             URL.revokeObjectURL(previewUrl);
+    //         }
+    //     };
+    // }, [previewUrl]);
+
     useEffect(() => {
-        return () => {
-            if (previewUrl) {
-                URL.revokeObjectURL(previewUrl);
-            }
-        };
-    }, [previewUrl]);
+        if (isValid && selectedFile && previewUrl) {
+            updateImageData(selectedFile, previewUrl, fileName);
+        }
+    }, [selectedFile, previewUrl, fileName]);
 
     const checkIsFileValid = (
         file: File
@@ -66,44 +75,47 @@ export const useImageForm = (): IUseImageFormReturn => {
         return { isValid: true, error: null };
     };
 
-    const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
+    const handleImageChange = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            const file = event.target.files?.[0];
 
-        setError(null);
+            setError(null);
 
-        if (!file) {
-            setIsValid(false);
-            return;
-        }
+            if (!file) {
+                setIsValid(false);
+                return;
+            }
 
-        const validation = checkIsFileValid(file);
-        if (!validation.isValid) {
-            setError(validation.error);
+            const validation = checkIsFileValid(file);
+            if (!validation.isValid) {
+                setError(validation.error);
 
-            setIsValid(false);
+                setIsValid(false);
 
-            return;
-        }
+                return;
+            }
 
-        setSelectedFile(file);
-        setFileName(file.name);
-        setIsValid(true);
+            setSelectedFile(file);
+            setFileName(file.name);
+            setIsValid(true);
 
-        const objectUrl = URL.createObjectURL(file);
-        setPreviewUrl(objectUrl);
+            const objectUrl = URL.createObjectURL(file);
+            setPreviewUrl(objectUrl);
 
-        const reader = new FileReader();
+            const reader = new FileReader();
 
-        reader.onload = (event) => {
-            const base64 = event.target?.result as string;
+            reader.onload = (event) => {
+                const base64 = event.target?.result as string;
 
-            localStorage.setItem("userImageUrl", base64);
+                localStorage.setItem("userImageUrl", base64);
 
-            localStorage.setItem("userImageName", file.name);
-        };
+                localStorage.setItem("userImageName", file.name);
+            };
 
-        reader.readAsDataURL(file);
-    };
+            reader.readAsDataURL(file);
+        },
+        []
+    );
 
     const handleResetImage = () => {
         setSelectedFile(null);

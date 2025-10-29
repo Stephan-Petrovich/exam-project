@@ -25,6 +25,7 @@ const ModalImageUpload = ({
                     type="file"
                     accept=".jpg,.jpeg,.png"
                     onChange={handleImageChange}
+                    className="file-input"
                 />
 
                 {error && <div className="error-message">{error}</div>}
@@ -57,15 +58,13 @@ const ModalImageUpload = ({
                     </div>
 
                     <div className="preview-container">
-                        {selectedFile?.type.startsWith("image/") && (
-                            <div className="image-preview">
-                                <img
-                                    src={previewUrl}
-                                    alt="Preview"
-                                    className="preview-image"
-                                />
-                            </div>
-                        )}
+                        <div className="image-preview">
+                            <img
+                                src={previewUrl}
+                                alt="Preview"
+                                className="preview-image"
+                            />
+                        </div>
                     </div>
                 </div>
             )}

@@ -1,48 +1,83 @@
 .guide-header-block {
-    margin: 0 auto;
-    max-width: 70rem;
-    background-color: var(--primary-background-color);
-    border: 0.1rem solid var(--border-color);
-    border-radius: 0.5rem;
-    top: 0;
-    z-index: 100;
-    box-sizing: border-box;
+    background-color: #ffffff;
+    border: 2px solid #ccc;
+    border-radius: 16px;
+    padding: 1rem 0.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    margin: 0.3rem 0;
 }
 
 .guide-header-body {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
-    align-items: stretch;
-    padding: 0.25rem 0;
+    align-items: center;
+    justify-content: center;
 }
 
 .link-block {
     flex: 1;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
     text-align: center;
-    margin: 0;
+    position: relative;
 }
 
-.link-block a {
-    color: var(--primary-text-color);
+.guide-link {
     text-decoration: none;
     font-weight: 500;
-    transition: color 0.3s ease;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    color: #64748b;
     display: block;
-    padding: 0.5rem 0;
+    width: 100%;
 }
 
 .link-block.active {
-    background-color: var(--border-color);
+    font-weight: 600;
+    color: #1e40af;
+    background: rgba(59, 130, 246, 0.1);
+    border: 2px solid #3b82f6;
 }
 
-.link-block.active a {
-    color: var(--primary-text-color);
-    font-weight: 600;
+.link-block.completed {
+    background: #7ed693;
+    box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+    border: 1px solid #2cb98c;
+    color: #2b2c2c;
+}
+
+.link-block.completed .guide-link {
+    color: white;
+    font-weight: 500;
+}
+
+.link-block.completed:not(.active):hover {
+    background: #46c967;
+    transform: translateY(-1px);
+}
+
+.link-block.disabled {
+    background: #e2e8f0;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.link-block.disabled .guide-link {
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+.link-block.disabled:hover {
+    transform: none;
+    background: #e2e8f0;
 }
 
 .gap-block {
-    width: 1px;
-    height: 2rem;
-    background-color: var(--border-color);
+    width: 2px;
+    height: 24px;
+    background: #ccc;
+    margin: 0 0.5rem;
+    border-radius: 1px;
+    opacity: 0.7;
 }

@@ -1,8 +1,8 @@
 import Layout from "../../layout/DefaultLayout";
 import ModalInfo from "../../components/ModalInfo";
+import { useEffect, useRef, type ReactElement } from "react";
 import { useProgress } from "../../contexts/ProgressContext";
 import { useUserForm } from "../../hooks/useUserForm";
-import { useEffect, useRef, type ReactElement } from "react";
 import { useNavigate } from "react-router-dom";
 
 const InfoPage = (): ReactElement => {
