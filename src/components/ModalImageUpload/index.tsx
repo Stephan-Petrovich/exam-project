@@ -1,3 +1,4 @@
+import AlertError from "../AlertError";
 import { useImageData } from "../../contexts/ImageDataContext";
 import { ReactElement } from "react";
 import "./style.css";
@@ -15,7 +16,7 @@ const ModalImageUpload = (): ReactElement => {
                     className="file-input"
                 />
 
-                {error && <div className="error-message">{error}</div>}
+                {error && <AlertError label={error} />}
 
                 <div className="file-requirements">
                     <p>

@@ -1,0 +1,36 @@
+.rotatable-arrow-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.arrow {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    transition: transform 0.3s ease;
+}
+
+.arrow-head {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 30px solid var(--dark-text-color);
+}
+
+.arrow-body {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 60px;
+    background-color: var(--dark-text-color);
+}

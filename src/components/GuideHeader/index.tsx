@@ -19,7 +19,7 @@ const GuideHeader = (): ReactElement => {
         const progressStates: Record<string, boolean> = {
             "/": progress.isInfoCompleted,
             "/loader": progress.isLoaderCompleted,
-            "/sender": progress.isSenderCompleted,
+            "/sender": progress.isCaptchaCompleted,
         };
 
         return progressStates[path];
@@ -30,7 +30,6 @@ const GuideHeader = (): ReactElement => {
             event.preventDefault();
 
             alert("Please complete the steps before proceeding to this page.");
-
             return;
         }
 
@@ -49,12 +48,13 @@ const GuideHeader = (): ReactElement => {
                 {navigationItems.map((item, index) => (
                     <Fragment key={item.path}>
                         {index > 0 && <div className="gap-block" />}
+
                         <div
                             className={`link-block ${getIsActive(item.path)} ${
                                 !checkIsCanAccessStep(item.path)
                                     ? "disabled"
                                     : ""
-                            } ${getIsCompleted(item.path) ? "completed" : ""}`}
+                            } ${!getIsCompleted(item.path) ? "" : "completed"}`}
                         >
                             <Link
                                 to={item.path}

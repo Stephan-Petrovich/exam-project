@@ -10,6 +10,7 @@ interface IProgressState {
     isInfoCompleted: boolean;
     isLoaderCompleted: boolean;
     isSenderCompleted: boolean;
+    isCaptchaCompleted: boolean;
 }
 
 interface IProgressContext {
@@ -31,6 +32,7 @@ const ProgressProvider = ({ children }: IProgressProviderProps) => {
         isInfoCompleted: false,
         isLoaderCompleted: false,
         isSenderCompleted: false,
+        isCaptchaCompleted: false,
     });
 
     useEffect(() => {
@@ -58,6 +60,7 @@ const ProgressProvider = ({ children }: IProgressProviderProps) => {
             isInfoCompleted: false,
             isLoaderCompleted: false,
             isSenderCompleted: false,
+            isCaptchaCompleted: false,
         });
     };
 

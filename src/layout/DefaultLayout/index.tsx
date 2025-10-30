@@ -58,6 +58,7 @@ const Layout = ({
                             type="submit"
                             label="Submit data"
                             onClick={footerActions.onSubmit}
+                            disabled={footerActions.isSubmitDisabled}
                         />
                     )}
                 </div>

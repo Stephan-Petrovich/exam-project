@@ -2,30 +2,30 @@ import { useState } from "react";
 
 interface IUseConfirmReturn {
     isOpen: boolean;
-    open: () => void;
-    close: () => void;
+    closeDialog: () => void;
     confirm: (action: () => void) => void;
     executeAction: () => void;
 }
 
 export const useConfirm = (): IUseConfirmReturn => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+
     const [pendingAction, setPendingAction] = useState<(() => void) | null>(
         null
     );
 
-    const open = (): void => {
+    const openDialog = (): void => {
         setIsOpen(true);
     };
 
-    const close = (): void => {
+    const closeDialog = (): void => {
         setIsOpen(false);
     };
 
     const confirm = (action: () => void): void => {
         setPendingAction(() => action);
 
-        open();
+        openDialog();
     };
 
     const executeAction = () => {
@@ -33,8 +33,13 @@ export const useConfirm = (): IUseConfirmReturn => {
             pendingAction();
         }
 
-        close();
+        closeDialog();
     };
 
-    return { isOpen, open, close, confirm, executeAction };
+    return {
+        isOpen,
+        closeDialog,
+        confirm,
+        executeAction,
+    };
 };

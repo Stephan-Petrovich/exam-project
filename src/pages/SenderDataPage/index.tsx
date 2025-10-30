@@ -1,14 +1,15 @@
 import Dialog from "../../components/Dialog";
 import Layout from "../../layout/DefaultLayout";
 import SuccessAlert from "../../components/SuccessAlert";
+import CaptchaModal from "../../components/CaptchaModal";
 import { useImageData } from "../../contexts/ImageDataContext";
 import { useSuccessAlert } from "../../hooks/useSuccessAlert";
 import { useProgress } from "../../contexts/ProgressContext";
 import { useUserData } from "../../contexts/UserDataContext";
+import { useCaptcha } from "../../hooks/useCaptcha";
 import { useConfirm } from "../../hooks/useConfirm";
 import { useNavigate } from "react-router-dom";
 import { type ReactElement } from "react";
-import "./style.css";
 
 const SenderDataPage = (): ReactElement => {
     const navigate = useNavigate();
@@ -16,53 +17,69 @@ const SenderDataPage = (): ReactElement => {
     const { handleResetData } = useUserData();
     const { handleResetImage } = useImageData();
 
-    const { checkIsCanAccessStep, resetProgress } = useProgress();
+    const { checkIsCanAccessStep, resetProgress, markStepCompleted } =
+        useProgress();
+
+    const {
+        generatedDirection,
+        currentRotation,
+        isVerified,
+        initializeCaptcha,
+        handleRotateLeft,
+        handleRotateRight,
+        checkIsRightDirection,
+    } = useCaptcha();
 
     const resetDialog = useConfirm();
     const submitDialog = useConfirm();
 
     const resetSuccess = useSuccessAlert();
     const submitSuccess = useSuccessAlert();
+    const captchaSuccess = useSuccessAlert();
 
-    const isCanSubmit = checkIsCanAccessStep("/sender");
+    const isCanSubmit = checkIsCanAccessStep("/sender") && isVerified;
 
     const handleResetAllData = () => {
         handleResetData();
         handleResetImage();
         resetProgress();
+        initializeCaptcha();
     };
 
     const handleSubmit = () => {
-        if (!isCanSubmit) {
-            alert("Please complete all steps before submitting.'");
-            return;
-        }
-
         submitDialog.confirm(() => {
-            submitSuccess.showAlert(
-                "Your data has been submitted successfully!",
-                "Thank you!",
-                () => {
-                    handleResetAllData();
+            submitSuccess.showAlert(() => {
+                handleResetAllData();
 
-                    navigate("/");
-                }
-            );
+                navigate("/");
+            });
         });
     };
 
     const handleReset = () => {
         resetDialog.confirm(() => {
-            resetSuccess.showAlert(
-                "All data has been reset successfully.",
-                "Reset Complete",
-                () => {
-                    handleResetAllData();
+            resetSuccess.showAlert(() => {
+                handleResetAllData();
 
-                    navigate("/");
-                }
-            );
+                navigate("/");
+            });
         });
+    };
+
+    const handleVerifyCaptcha = () => {
+        const isCorrect = checkIsRightDirection();
+
+        if (isCorrect) {
+            markStepCompleted("isCaptchaCompleted");
+
+            captchaSuccess.showAlert(() => {});
+        } else {
+            alert(
+                "Incorrect direction. Please try again with a new challenge."
+            );
+
+            initializeCaptcha();
+        }
     };
 
     return (
@@ -77,8 +94,16 @@ const SenderDataPage = (): ReactElement => {
                     isSubmitDisabled: !isCanSubmit,
                 }}
             >
-                <div className="sender-data-block">
-                    There was supposed to be some creative content here.
+                <div className="sender-page-container">
+                    <CaptchaModal
+                        generatedDirection={generatedDirection}
+                        currentRotation={currentRotation}
+                        isVerified={isVerified}
+                        onRotateLeft={handleRotateLeft}
+                        onRotateRight={handleRotateRight}
+                        onVerify={handleVerifyCaptcha}
+                        onReset={initializeCaptcha}
+                    />
                 </div>
             </Layout>
 
@@ -87,7 +112,7 @@ const SenderDataPage = (): ReactElement => {
                 title="Reset All Data"
                 message="Are you sure you want to reset all data? This action cannot be undone."
                 onConfirm={resetDialog.executeAction}
-                onCancel={resetDialog.close}
+                onCancel={resetDialog.closeDialog}
             />
 
             <Dialog
@@ -95,21 +120,28 @@ const SenderDataPage = (): ReactElement => {
                 title="Submit Your Data"
                 message="Are you ready to submit your data? Please make sure all information is correct."
                 onConfirm={submitDialog.executeAction}
-                onCancel={submitDialog.close}
+                onCancel={submitDialog.closeDialog}
             />
 
             <SuccessAlert
                 isOpen={resetSuccess.isOpen}
-                title={resetSuccess.title}
-                message={resetSuccess.message}
+                title="All data has been reset successfully."
+                message="Reset Complete"
                 onClose={resetSuccess.hideAlert}
             />
 
             <SuccessAlert
                 isOpen={submitSuccess.isOpen}
-                title={submitSuccess.title}
-                message={submitSuccess.message}
+                title="Your data has been submitted successfully!"
+                message="Thank you!"
                 onClose={submitSuccess.hideAlert}
+            />
+
+            <SuccessAlert
+                isOpen={captchaSuccess.isOpen}
+                title="Human verification successful!"
+                message="Verification Completed"
+                onClose={captchaSuccess.hideAlert}
             />
         </>
     );
