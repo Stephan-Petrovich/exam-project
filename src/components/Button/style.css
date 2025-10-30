@@ -11,17 +11,17 @@ button {
     border-radius: 0.25rem;
     background-color: var(--primary-background-color);
     border: 0.125rem solid var(--border-color);
-
     color: var(--primary-text-color);
-
     transition: background-color 0.35s;
 }
 
 .styled-button:enabled:hover {
-    background-color: var(--border-color);
+    background-color: var(--disabled-background-color);
     cursor: pointer;
 }
 
 .styled-button:disabled {
     cursor: not-allowed;
+    background-color: var(--disabled-button-background-color);
+    border: 0.062rem solid var(--secondary-text-color);
 }

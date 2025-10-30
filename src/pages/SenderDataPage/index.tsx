@@ -1,6 +1,8 @@
 import Dialog from "../../components/Dialog";
 import Layout from "../../layout/DefaultLayout";
+import SuccessAlert from "../../components/SuccessAlert";
 import { useImageData } from "../../contexts/ImageDataContext";
+import { useSuccessAlert } from "../../hooks/useSuccessAlert";
 import { useProgress } from "../../contexts/ProgressContext";
 import { useUserData } from "../../contexts/UserDataContext";
 import { useConfirm } from "../../hooks/useConfirm";
@@ -16,7 +18,11 @@ const SenderDataPage = (): ReactElement => {
 
     const { checkIsCanAccessStep, resetProgress } = useProgress();
 
-    const { isOpen, close, confirm, executeAction } = useConfirm();
+    const resetDialog = useConfirm();
+    const submitDialog = useConfirm();
+
+    const resetSuccess = useSuccessAlert();
+    const submitSuccess = useSuccessAlert();
 
     const isCanSubmit = checkIsCanAccessStep("/sender");
 
@@ -32,19 +38,30 @@ const SenderDataPage = (): ReactElement => {
             return;
         }
 
-        confirm(() => {
-            alert("Thank you! Your data has been submitted successfully.");
+        submitDialog.confirm(() => {
+            submitSuccess.showAlert(
+                "Your data has been submitted successfully!",
+                "Thank you!",
+                () => {
+                    handleResetAllData();
 
-            handleResetAllData();
-
-            navigate("/");
+                    navigate("/");
+                }
+            );
         });
     };
 
     const handleReset = () => {
-        confirm(() => {
-            handleResetAllData();
-            alert("All data has been reset successfully.");
+        resetDialog.confirm(() => {
+            resetSuccess.showAlert(
+                "All data has been reset successfully.",
+                "Reset Complete",
+                () => {
+                    handleResetAllData();
+
+                    navigate("/");
+                }
+            );
         });
     };
 
@@ -66,19 +83,33 @@ const SenderDataPage = (): ReactElement => {
             </Layout>
 
             <Dialog
-                isOpen={isOpen}
+                isOpen={resetDialog.isOpen}
                 title="Reset All Data"
                 message="Are you sure you want to reset all data? This action cannot be undone."
-                onConfirm={executeAction}
-                onCancel={close}
+                onConfirm={resetDialog.executeAction}
+                onCancel={resetDialog.close}
             />
 
             <Dialog
-                isOpen={isOpen}
+                isOpen={submitDialog.isOpen}
                 title="Submit Your Data"
                 message="Are you ready to submit your data? Please make sure all information is correct."
-                onConfirm={executeAction}
-                onCancel={close}
+                onConfirm={submitDialog.executeAction}
+                onCancel={submitDialog.close}
+            />
+
+            <SuccessAlert
+                isOpen={resetSuccess.isOpen}
+                title={resetSuccess.title}
+                message={resetSuccess.message}
+                onClose={resetSuccess.hideAlert}
+            />
+
+            <SuccessAlert
+                isOpen={submitSuccess.isOpen}
+                title={submitSuccess.title}
+                message={submitSuccess.message}
+                onClose={submitSuccess.hideAlert}
             />
         </>
     );

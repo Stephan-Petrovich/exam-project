@@ -19,6 +19,7 @@
     --completed-box-shadow: rgba(5, 150, 105, 0.3);
     --loading-background-color: rgba(155, 220, 162, 0.285);
     --error-background-color: #fecaca;
+    --disabled-button-background-color: #cccccc;
     --darkened-background-color: rgba(0, 0, 0, 0.5);
     --blue-background-color: #3498db;
     --dark-blue-background-color: #2980b9;

@@ -61,12 +61,13 @@ const ImageDataProvider = ({ children }: IImageDataProviderProps) => {
         }
 
         const isDataValid = !!imageData.previewUrl && !!imageData.fileName;
+
         setIsValid(isDataValid);
     }, [imageData.previewUrl, imageData.fileName]);
 
     const checkIsFileValid = useCallback((file: File): boolean => {
         if (!VALIDATION_CONFIG.allowedTypes.includes(file.type)) {
-            setError(`Invalid file type. Allowed types: JPG, PNG`);
+            setError(`Invalid file type. Allowed types: JPG, PNG, PDF`);
 
             return false;
         }
