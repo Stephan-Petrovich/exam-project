@@ -23,16 +23,8 @@ export const useCaptcha = (): IUseCaptchaReturn => {
     const [isVerified, setIsVerified] = useState<boolean>(false);
 
     useEffect(() => {
-        const savedStatusOfCaptch = localStorage.getItem("savedStatus");
-
-        if (savedStatusOfCaptch) {
-            setIsVerified(JSON.parse(savedStatusOfCaptch));
-        }
+        initializeCaptcha();
     }, []);
-
-    useEffect(() => {
-        localStorage.setItem("savedStatus", JSON.stringify(isVerified));
-    }, [isVerified]);
 
     const generateRandomDirection = () => {
         const randomIndex = Math.floor(Math.random() * DIRECTIONS.length);
@@ -41,8 +33,6 @@ export const useCaptcha = (): IUseCaptchaReturn => {
     };
 
     const initializeCaptcha = () => {
-        localStorage.removeItem("savedStatus");
-
         markStepIncompleted("isCaptchaCompleted");
 
         const newDirection = generateRandomDirection();
