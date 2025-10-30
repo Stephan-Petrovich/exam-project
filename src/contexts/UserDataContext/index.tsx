@@ -133,10 +133,12 @@ const UserDataProvider = ({ children }: IUserDataProviderProps) => {
             if (typeof passedValue === "string") {
                 const fieldIsValid = checkIsFieldValid(field, passedValue);
 
-                setErrors((prev) => ({
-                    ...prev,
-                    [field]: fieldIsValid ? "" : getErrorMessage(field),
-                }));
+                if (fieldIsValid == false) {
+                    setErrors((prev) => ({
+                        ...prev,
+                        [field]: getErrorMessage(field),
+                    }));
+                }
             }
         },
         []

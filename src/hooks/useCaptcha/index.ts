@@ -41,6 +41,8 @@ export const useCaptcha = (): IUseCaptchaReturn => {
     };
 
     const initializeCaptcha = () => {
+        localStorage.removeItem("savedStatus");
+
         markStepIncompleted("isCaptchaCompleted");
 
         const newDirection = generateRandomDirection();
